@@ -1,9 +1,10 @@
-import { Repository, getRepository } from 'typeorm';
+import { Repository, getRepository, Not } from 'typeorm';
 // import { hash } from 'bcryptjs';
 
 import User from '@modules/users/infra/typeorm/entities/user';
 import IUserRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 // import AppError from '@shared/errors/AppError';
 
 class UsersRepository implements IUserRepository {
@@ -25,6 +26,24 @@ class UsersRepository implements IUserRepository {
     const user = await this.userRepository.findOne(id);
 
     return user;
+  }
+
+  public async findAllProviders({
+    exept_user_id,
+  }: IFindAllProvidersDTO): Promise<User[]> {
+    let users: User[];
+
+    if (exept_user_id) {
+      users = await this.userRepository.find({
+        where: {
+          id: Not(exept_user_id),
+        },
+      });
+    } else {
+      users = await this.userRepository.find();
+    }
+
+    return users;
   }
 
   public async create({
