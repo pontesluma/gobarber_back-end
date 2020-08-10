@@ -16,10 +16,10 @@ import '@shared/container';
 
 const app = express();
 
-app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
-app.use('/files', express.static(updateConfig.tmpFolder)); // n entendi/lembro
+app.use('/files', express.static(updateConfig.uploadsFolder)); // n entendi/lembro
+app.use(rateLimiter);
 app.use(routes);
 app.use(errors());
 
