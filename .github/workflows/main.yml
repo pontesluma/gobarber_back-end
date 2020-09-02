@@ -66,7 +66,7 @@ jobs:
             cd ~/app/gobarber_back-end
             ./node_modules/.bin/typeorm migration:run
             
-      - name: Run migrations on Digital Ocean
+      - name: Restart Digital Ocean server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
